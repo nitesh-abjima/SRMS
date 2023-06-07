@@ -18,6 +18,20 @@ namespace SRMS.Controllers
             return View();
         }
 
+        public IActionResult Signup()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Signup(Users user)
+        {
+            if(ModelState.IsValid)
+            {
+
+            }
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();

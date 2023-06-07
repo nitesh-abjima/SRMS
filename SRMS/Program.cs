@@ -1,7 +1,10 @@
+using SRMS.Context;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddSingleton<DapperContext>();
 
 var app = builder.Build();
 

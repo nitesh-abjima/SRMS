@@ -1,43 +1,46 @@
 ﻿@model SRMS.Models.Users
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Signup";
 }
 
-<h1>Login</h1>
+<h1>Signup</h1>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Index">
+        <form asp-action="Signup" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            
             <div class="form-group">
                 <label asp-for="Username" class="control-label"></label>
                 <input asp-for="Username" class="form-control" />
                 <span asp-validation-for="Username" class="text-danger"></span>
             </div>
-            
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="Password" class="control-label"></label>
-                @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
-                @*<input asp-for="Password" class="form-control" type="password" />*@
+                <input asp-for="Password" class="form-control" type="password"/>
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="UserType" class="control-label"></label>
-                <input asp-for="UserType" class="form-control" />
+                @Html.DropDownListFor(model => model.UserType, new SelectList(new[] {"Teacher", "Student"}), "Select role", new{@class= "form-control"})
+                @*<input asp-for="UserType" class="form-control" />*@
                 <span asp-validation-for="UserType" class="text-danger"></span>
             </div>
             <br/>
             <div class="form-group">
-                <input type="submit" value="Log In" class="btn btn-primary" />
+                <input type="submit" value="Sign Up" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 <br />
 <div>
-    <a asp-action="Signup">Not Registered yet? Sign Up</a>
+    <a asp-action="Index">Back to Login</a>
 </div>
 
 @section Scripts {
