@@ -1,5 +1,7 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using Dapper;
+using Microsoft.Data.SqlClient;
 using System.Data;
+using System.Data.Common;
 
 namespace SRMS.Context
 {
@@ -17,3 +19,5 @@ namespace SRMS.Context
         public IDbConnection CreateConnection() => new SqlConnection(_connectionString);
     }
 }
+
+
