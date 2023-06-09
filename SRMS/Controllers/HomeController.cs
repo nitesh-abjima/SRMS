@@ -30,32 +30,40 @@ namespace SRMS.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Index(Users user)
+        public async Task<IActionResult> Index(LoginViewModel user)
         {
             if (ModelState.IsValid)
             {
-                bool S = await _userAccess.LoginUser(user.Username, user.Password, user.UserType);
-
-                if (S)
+                try
                 {
-                    string userType = user.UserType;
+                    bool S = await _userAccess.LoginUser(user.Username, user.Password, user.UserType);
 
-                    if (userType == "Teacher")
+                    if (S)
                     {
-                        return RedirectToAction("TeacherDashboard");
-                    }
-                    else if (userType == "Student")
-                    {
-                        return RedirectToAction("StudentDashboard");
+                        string userType = user.UserType;
+
+                        if (userType == "Teacher")
+                        {
+                            return RedirectToAction("TeacherDashboard");
+                        }
+                        else if (userType == "Student")
+                        {
+                            return RedirectToAction("StudentDashboard");
+                        }
+                        else
+                        {
+                            ModelState.AddModelError(string.Empty, "Invalid user type.");
+                        }
                     }
                     else
                     {
-                        ModelState.AddModelError(string.Empty, "Invalid user type.");
+                        ModelState.AddModelError(string.Empty, "Invalid username or password.");
                     }
                 }
-                else
+                catch (Exception ex)
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid username or password.");
+
+                    ModelState.AddModelError(string.Empty, ex.Message);
                 }
             }
 
