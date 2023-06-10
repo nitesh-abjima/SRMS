@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.Scripting;
 using SRMS.Infrastructure;
 using SRMS.Models;
 using System.Diagnostics;
@@ -29,6 +30,14 @@ namespace SRMS.Controllers
             return View();
         }
 
+        //public IActionResult Logout()
+        //{
+        //    // Perform logout actions
+
+        //    return RedirectToAction("Index", "Home");
+        //}
+
+
         [HttpPost]
         public async Task<IActionResult> Index(LoginViewModel user)
         {
@@ -46,14 +55,11 @@ namespace SRMS.Controllers
                         {
                             return RedirectToAction("TeacherDashboard");
                         }
-                        else if (userType == "Student")
+                        else 
                         {
                             return RedirectToAction("StudentDashboard");
                         }
-                        else
-                        {
-                            ModelState.AddModelError(string.Empty, "Invalid user type.");
-                        }
+                        
                     }
                     else
                     {
@@ -86,6 +92,7 @@ namespace SRMS.Controllers
                     bool S = await _userAccess.SignupUser(user);
                     if (S)
                     {
+                        TempData["SignupSuccessMessage"] = "<script>alert('Signup Successfull !') </script >";
                         return RedirectToAction("Index");
                     }
                     //else
