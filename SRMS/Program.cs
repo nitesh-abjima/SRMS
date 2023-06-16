@@ -9,7 +9,10 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddSingleton<DapperContext>();
 
-builder.Services.AddScoped<IUserAccess, UserAccess>();                                                                                                    
+builder.Services.AddScoped<IUserAccess, UserAccess>();
+builder.Services.AddScoped<IStudent, StudentRepo>();
+builder.Services.AddScoped<IResultRepo, ResultRepo>();
+builder.Services.AddScoped<IStudentResult, StudentResultRepo>();
 
 var app = builder.Build();
 

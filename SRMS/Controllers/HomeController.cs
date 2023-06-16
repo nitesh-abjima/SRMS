@@ -10,11 +10,15 @@ namespace SRMS.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IUserAccess _userAccess;
+        private readonly IStudent _student;
+        private readonly IResultRepo _results;
 
-        public HomeController(ILogger<HomeController> logger, IUserAccess userAccess)
+        public HomeController(ILogger<HomeController> logger, IUserAccess userAccess, IStudent student, IResultRepo results)
         {
             _logger = logger;
             _userAccess = userAccess;
+            _student = student;
+            _results = results;
         }
 
         public IActionResult Index()
@@ -23,11 +27,22 @@ namespace SRMS.Controllers
         }
         public IActionResult TeacherDashboard()
         {
-            return View();
+            var students = _student.GetAllStudents();
+
+            return View(students);
         }
         public IActionResult StudentDashboard()
         {
             return View();
+        }
+        public IActionResult CreateStudent()
+        {
+            return View();
+        }
+        public IActionResult Result()
+        {
+            var result = _results.GetResult();
+            return View(result);
         }
 
         //public IActionResult Logout()
