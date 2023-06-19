@@ -1,0 +1,64 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using SRMS.Infrastructure;
+using SRMS.Models;
+
+namespace SRMS.Controllers
+{
+    public class ResultController : Controller
+    {
+        private readonly IResultRepo _result;
+
+        public ResultController(IResultRepo result)
+        {
+            _result = result;
+        }
+
+        public IActionResult EditResult(int id)
+        {
+            var result = _result.GetResultById(id);
+            if (result == null)
+            {
+                return NotFound();
+            }
+
+            return View(result);
+        }
+
+        public IActionResult AddResult()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult AddResult(Result result)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _result.AddResult(result);
+                    return RedirectToAction("Result", "Home");
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError(string.Empty, ex.Message);
+                }
+            }
+
+            return View(result);
+        }
+
+        [HttpPost]
+        public IActionResult EditResult(Result result)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(result);
+            }
+
+            _result.EditResult(result);
+
+            return RedirectToAction("Result", "Home");
+        }
+    }
+}
