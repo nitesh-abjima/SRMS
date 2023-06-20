@@ -13,6 +13,17 @@ namespace SRMS.Controllers
             _student = student;
         }
 
+        public IActionResult EditStudent(int id)
+        {
+            var student = _student.GetStudentById(id);
+            if (student == null)
+            {
+                return NotFound();
+            }
+
+            return View(student);
+        }
+
         [HttpPost]
         public IActionResult CreateStudent(Student student)
         {
@@ -30,6 +41,19 @@ namespace SRMS.Controllers
             }
 
             return View("~/Views/Home/CreateStudent.cshtml", student);
+        }
+
+        [HttpPost]
+        public IActionResult EditStudent(Student student)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(student);
+            }
+
+            _student.EditStudent(student);
+
+            return RedirectToAction("TeacherDashboard", "Home");
         }
 
     }

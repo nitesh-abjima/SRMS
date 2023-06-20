@@ -55,8 +55,9 @@
                         @Html.DisplayFor(modelItem => item.Class)
                     </td>
                     <td>
-                        @Html.ActionLink("Edit", "Edit", new { id=item.Id }, new {@class="btn btn-info"})
-                        @Html.ActionLink("Delete", "Delete", new { id=item.Id }, new {@class="btn btn-danger"})
+                        @*@Html.ActionLink("Edit", "Edit", new { id=item.Id }, new {@class="btn btn-info"})*@
+                        <a href="@Url.Action("EditStudent", "Student", new { id = item.Id })" class="btn btn-info">Edit</a>
+                        @*@Html.ActionLink("Delete", "Delete", new { id=item.Id }, new {@class="btn btn-danger"})*@
                         @*@Html.ActionLink("Result", "Result", new { id=item.Id  })*@
                     </td>
                 </tr>

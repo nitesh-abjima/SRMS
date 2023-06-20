@@ -5,43 +5,51 @@
 }
 @Html.Raw(TempData["SignupSuccessMessage"])
 
-<h1>Login</h1>
-<hr />
-<div class="row">
+<div class="row justify-content-center">
     <div class="col-md-4">
-        <form asp-action="Index" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            
-            <div class="form-group">
-                <label asp-for="Username" class="control-label"></label>
-                <input asp-for="Username" class="form-control" />
-                <span asp-validation-for="Username" class="text-danger"></span>
+        <div class="card bg-light">
+            <div class="card-body">
+                <h1 class="text-center">Login</h1>
+                <hr />
+
+                <form asp-action="Index" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-group">
+                        <label asp-for="Username" class="control-label text-left"></label>
+                        <input asp-for="Username" class="form-control" />
+                        <span asp-validation-for="Username" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Password" class="control-label text-left"></label>
+                        @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="UserType" class="control-label text-left"></label>
+                        @Html.DropDownListFor(model => model.UserType, new SelectList(new[] {"Teacher", "Student"}), "Select role", new {@class = "form-control"})
+                        <span asp-validation-for="UserType" class="text-danger"></span>
+                    </div>
+                    <br/>
+
+                    <div class="form-group text-center">
+                        <input type="submit" value="Log In" class="btn btn-primary" />
+                    </div>
+                </form>
+
+                <div class="text-center">
+                    <span>Not Registered yet? </span>
+                    <a asp-action="Signup">Sign Up</a>
+                </div>
             </div>
-            
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
-                @*<input asp-for="Password" class="form-control" type="password" />*@
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UserType" class="control-label"></label>
-                @Html.DropDownListFor(model => model.UserType, new SelectList(new[] {"Teacher", "Student"}), "Select role", new{@class= "form-control"})
-                @*<input asp-for="UserType" class="form-control" />*@
-                <span asp-validation-for="UserType" class="text-danger"></span>
-            </div>
-            <br/>
-            <div class="form-group">
-                <input type="submit" value="Log In" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
-<br />
-<div>
-    <a asp-action="Signup">Not Registered yet? Sign Up</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

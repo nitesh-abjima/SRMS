@@ -17,5 +17,6 @@ namespace SRMS.Models
         public decimal Marks { get; set; }
         public decimal Percentage { get; set; }
         public string Decision { get; set; }
+        public bool HasResult { get; set; }
     }
 }

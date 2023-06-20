@@ -31,9 +31,10 @@ namespace SRMS.Controllers
                 ModelState.AddModelError(string.Empty, ex.Message);
                 //TempData["ErrorMessage"] = "<script>alert('Student with this roll no does not exists !') </script >";
                 //return RedirectToAction("StudentDashboard", "Home");
-                return View("~/Views/Home/StudentDashboard.cshtml");
+                //return View("~/Views/Home/StudentDashboard.cshtml");
             }
-            
+            return View("~/Views/Home/StudentDashboard.cshtml");
+
         }
     }
 }

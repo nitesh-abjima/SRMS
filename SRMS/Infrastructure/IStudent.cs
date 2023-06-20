@@ -6,5 +6,7 @@ namespace SRMS.Infrastructure
     {
         Student AddStudent(Student student);
         IEnumerable<Student> GetAllStudents();
+        Student GetStudentById(int id);
+        void EditStudent(Student student);
     }
 }
