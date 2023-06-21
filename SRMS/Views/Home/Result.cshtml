@@ -3,14 +3,14 @@
 @{
     ViewData["Title"] = "Result";
 }
-
+<div >
 <h1>Result</h1>
 
 <p>
     <a class="btn btn-primary" asp-action="AddResult" asp-controller="Result">Add result</a>
 </p>
 <button type="button" class="btn btn-primary" style="float:right" onclick="location.href='@Url.Action("TeacherDashboard")'">Back</button>
-<table class="table table-responsive table-border ">
+    <table class="table table-hover table-border ">
     <thead>
         <tr class="table-active table-dark">
             <th>
@@ -90,3 +90,4 @@
         }
     </tbody>
 </table>
+</div>

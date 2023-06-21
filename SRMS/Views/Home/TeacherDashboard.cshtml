@@ -3,76 +3,96 @@
 @{
     ViewData["Title"] = "TeacherDashboard";
 }
+<head>
+    <style>
+        .buttonbox {
+            background-color: white;
+            height: absolute;
+            box-shadow: 0 5px 10px black;
+            border-radius: 5px;
+            
+        }
 
-<h1>TeacherDashboard</h1>
+        .tablebox {
+            background-color: white;
+        }
+    </style>
+</head>
+<div class="buttonbox">
+    <div class="d-flex align-items-center">
+        <img src="https://cdn-icons-png.flaticon.com/512/354/354641.png" alt="Teacher free icon" title="Teacher free icon" width="100px" class="img-fluid mt-3">
+        <h3 class="mt-4">Teacher Dashboard</h3>
 
-@*<p>
-    <a asp-action="CreateStudent">Add Student</a>
-</p>*@
-<button type="button" class="btn btn-primary" style="float:right" onclick="location.href='@Url.Action("CreateStudent")'">Add Student</button>
-<button type="button" class="btn btn-primary" style="float:right; margin-right: 5px" onclick="location.href='@Url.Action("Result")'">Result</button>
+    </div>
+    <div>
+        <button type="button" class="btn btn-primary" style="float:right" onclick="location.href='@Url.Action("CreateStudent")'">Add Student</button>
+        <button type="button" class="btn btn-primary" style="float:right; margin-right: 5px" onclick="location.href='@Url.Action("Result")'">Result</button>
+    </div>
+    @*<a href="@Url.Action("Logout")">Logout</a>*@
 
-<table class="table table-responsive table-border ">
-    <thead>
-        <tr class="table-active table-dark">
-            <th>
-                @Html.DisplayNameFor(model => model.StudentName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RollNo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Gender)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DOB)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Class)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-         @if (Model != null && Model.Any())
-        {
-            @foreach (var item in Model)
+
+    <table class="table table-hover table-border">
+        <thead>
+            <tr class="table-active table-dark">
+                <th>
+                    @Html.DisplayNameFor(model => model.StudentName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.RollNo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Gender)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DOB)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Class)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StudentName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RollNo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Gender)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DOB)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Class)
+                        </td>
+                        <td>
+                            @*@Html.ActionLink("Edit", "Edit", new { id=item.Id }, new {@class="btn btn-info"})*@
+                            <a href="@Url.Action("EditStudent", "Student", new { id = item.Id })" class="btn btn-info">Edit</a>
+                            @*@Html.ActionLink("Delete", "Delete", new { id=item.Id }, new {@class="btn btn-danger"})*@
+                            @*@Html.ActionLink("Result", "Result", new { id=item.Id  })*@
+                        </td>
+                    </tr>
+                }
+            }
+
+            else
             {
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.StudentName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.RollNo)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Gender)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DOB)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Class)
-                    </td>
-                    <td>
-                        @*@Html.ActionLink("Edit", "Edit", new { id=item.Id }, new {@class="btn btn-info"})*@
-                        <a href="@Url.Action("EditStudent", "Student", new { id = item.Id })" class="btn btn-info">Edit</a>
-                        @*@Html.ActionLink("Delete", "Delete", new { id=item.Id }, new {@class="btn btn-danger"})*@
-                        @*@Html.ActionLink("Result", "Result", new { id=item.Id  })*@
+                    <td colspan="5">
+                        <div>
+                            No data available at this moment!
+                        </div>
                     </td>
                 </tr>
-            }   
-        }
-
-        else
-        {
-            <tr>
-                <td colspan="5">
-                    <div>
-                        No data available at this moment!
-                    </div>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+            }
+        </tbody>
+    </table>
+</div>
