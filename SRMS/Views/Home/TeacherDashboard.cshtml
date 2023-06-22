@@ -5,27 +5,22 @@
 }
 <head>
     <style>
-        .buttonbox {
+        .dashboard {
             background-color: white;
-            height: absolute;
             box-shadow: 0 5px 10px black;
             border-radius: 5px;
             
         }
-
-        .tablebox {
-            background-color: white;
-        }
     </style>
 </head>
-<div class="buttonbox">
+<div class="dashboard">
     <div class="d-flex align-items-center">
-        <img src="https://cdn-icons-png.flaticon.com/512/354/354641.png" alt="Teacher free icon" title="Teacher free icon" width="100px" class="img-fluid mt-3">
+        <img src="https://cdn-icons-png.flaticon.com/512/354/354641.png" alt="Teacher free icon" title="Teacher Dashboard" width="100px" class="img-fluid mt-3">
         <h3 class="mt-4">Teacher Dashboard</h3>
 
     </div>
     <div>
-        <button type="button" class="btn btn-primary" style="float:right" onclick="location.href='@Url.Action("CreateStudent")'">Add Student</button>
+        <button type="button" class="btn btn-primary" style="float:right; margin-right: 5px" onclick="location.href='@Url.Action("CreateStudent")'">Add Student</button>
         <button type="button" class="btn btn-primary" style="float:right; margin-right: 5px" onclick="location.href='@Url.Action("Result")'">Result</button>
     </div>
     @*<a href="@Url.Action("Logout")">Logout</a>*@

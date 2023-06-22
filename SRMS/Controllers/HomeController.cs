@@ -70,11 +70,11 @@ namespace SRMS.Controllers
                         {
                             return RedirectToAction("TeacherDashboard");
                         }
-                        else 
+                        else
                         {
                             return RedirectToAction("StudentDashboard");
                         }
-                        
+
                     }
                     else
                     {
@@ -91,7 +91,6 @@ namespace SRMS.Controllers
             return View();
         }
 
-
         public IActionResult Signup()
         {
             return View();
@@ -100,7 +99,7 @@ namespace SRMS.Controllers
         [HttpPost]
         public async Task<IActionResult> Signup(Users user)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 try
                 {
