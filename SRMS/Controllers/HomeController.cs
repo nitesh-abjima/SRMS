@@ -1,8 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.Scripting;
 using SRMS.Infrastructure;
 using SRMS.Models;
 using System.Diagnostics;
+using System.Security.Claims;
+
+
 
 namespace SRMS.Controllers
 {
@@ -25,12 +31,14 @@ namespace SRMS.Controllers
         {
             return View();
         }
+        [Authorize]
         public IActionResult TeacherDashboard()
         {
             var students = _student.GetAllStudents();
 
             return View(students);
         }
+        [Authorize]
         public IActionResult StudentDashboard()
         {
             return View();
@@ -45,12 +53,16 @@ namespace SRMS.Controllers
             return View(result);
         }
 
-        //public IActionResult Logout()
-        //{
-        //    // Perform logout actions
-
-        //    return RedirectToAction("Index", "Home");
-        //}
+        public IActionResult Logout()
+        {
+            HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            var storedCookies = Request.Cookies.Keys;
+            foreach (var cookies in storedCookies)
+            {
+                Response.Cookies.Delete(cookies);
+            }
+            return RedirectToAction("Index", "Home");
+        }
 
 
         [HttpPost]
@@ -65,6 +77,11 @@ namespace SRMS.Controllers
                     if (S)
                     {
                         string userType = user.UserType;
+                        var identity = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, user.Username) },
+                              CookieAuthenticationDefaults.AuthenticationScheme);
+                        var principal = new ClaimsPrincipal(identity);
+                        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+                        HttpContext.Session.SetString("Username", user.Username);
 
                         if (userType == "Teacher")
                         {

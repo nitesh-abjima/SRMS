@@ -8,9 +8,10 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/SRMS.styles.css" asp-append-version="true" />
 </head>
-<body style="background: linear-gradient(to bottom, #33ccff 0%, #ccffcc 100%);">
+<body style="background-color: floralwhite">
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-light  fixed-top" style="background-color:#E3D4AD; height:7%">
+        @*<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">*@
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">SRMS</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -27,16 +28,34 @@
                         </li>
                     </ul>
                 </div>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div>
+                        <a class="btn btn-sm btn-danger" asp-action="Logout" asp-controller="Home">Logout</a>
+                    </div>
+                }
             </div>
         </nav>
     </header>
-    <div class="container">
+    <div class="container" style="padding-top:5%;">
+        <main role="main" class="pb-3">
+            @RenderBody()
+
+
+
+
+
+        </main>
+        </div>
+    @*<div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
-    </div>
+    </div>*@
 
-    <footer class="border-top footer text-muted" style="background-color: white">
+    <footer class="border-top footer" style="position: fixed; bottom: 0; width: 100%; height: 10%; background-color:#E3D4AD;height:7%">
+
+    @*<footer class="border-top footer text-muted" style="background-color: white">*@
         <div class="container">
             &copy; 2023 - SRMS - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
