@@ -1,0 +1,8 @@
+﻿@{
+    string username = Context.Request.HttpContext.Session.GetString("Username");
+}
+
+@if (!string.IsNullOrEmpty(username))
+{
+    <a href="@Url.Action("Logout", "Home")" class="btn btn-sm btn-danger">Logout</a>
+}

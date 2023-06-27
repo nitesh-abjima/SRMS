@@ -28,12 +28,18 @@
                         </li>
                     </ul>
                 </div>
-                @if (User.Identity.IsAuthenticated)
+                @*@if (User.Identity.IsAuthenticated)
                 {
                     <div>
                         <a class="btn btn-sm btn-danger" asp-action="Logout" asp-controller="Home">Logout</a>
                     </div>
-                }
+                }*@
+                
+
+                <div id="logoutForm">
+                    @await Html.PartialAsync("_Logoutpartial")
+                </div>
+
             </div>
         </nav>
     </header>
@@ -41,12 +47,8 @@
         <main role="main" class="pb-3">
             @RenderBody()
 
-
-
-
-
         </main>
-        </div>
+    </div>
     @*<div class="container">
         <main role="main" class="pb-3">
             @RenderBody()

@@ -31,14 +31,14 @@ namespace SRMS.Controllers
         {
             return View();
         }
-        [Authorize]
+        //[Authorize]
         public IActionResult TeacherDashboard()
         {
             var students = _student.GetAllStudents();
 
             return View(students);
         }
-        [Authorize]
+        //[Authorize]
         public IActionResult StudentDashboard()
         {
             return View();
@@ -55,12 +55,13 @@ namespace SRMS.Controllers
 
         public IActionResult Logout()
         {
-            HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            var storedCookies = Request.Cookies.Keys;
-            foreach (var cookies in storedCookies)
-            {
-                Response.Cookies.Delete(cookies);
-            }
+            //HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            //var storedCookies = Request.Cookies.Keys;
+            //foreach (var cookies in storedCookies)
+            //{
+            //    Response.Cookies.Delete(cookies);
+            //}
+            HttpContext.Session.Clear();
             return RedirectToAction("Index", "Home");
         }
 
@@ -77,10 +78,11 @@ namespace SRMS.Controllers
                     if (S)
                     {
                         string userType = user.UserType;
-                        var identity = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, user.Username) },
-                              CookieAuthenticationDefaults.AuthenticationScheme);
-                        var principal = new ClaimsPrincipal(identity);
-                        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+                        //var identity = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, user.Username) },
+                        //      CookieAuthenticationDefaults.AuthenticationScheme);
+                        //var principal = new ClaimsPrincipal(identity);
+                        //await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+                        //HttpContext.Session.SetString("Username", user.Username);
                         HttpContext.Session.SetString("Username", user.Username);
 
                         if (userType == "Teacher")

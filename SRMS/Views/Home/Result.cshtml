@@ -4,91 +4,64 @@
     ViewData["Title"] = "Result";
 }
 
-<div>
-    <h1>Result</h1>
+<div class="card">
+    <div class="card-body">
+        <h1 class="card-title">Result</h1>
 
-    <p>
-        <a class="btn btn-primary" asp-action="AddResult" asp-controller="Result">Add result</a>
-    </p>
-    <button type="button" class="btn btn-primary" style="float:right" onclick="location.href='@Url.Action("TeacherDashboard")'">Back</button>
-    <table class="table table-hover table-border ">
-        <thead>
-            <tr class="table-active table-dark">
-                <th>
-                    @Html.DisplayNameFor(model => model.RollNo)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Maths)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.English)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Science)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.History)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Marks)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Percentage)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Decision)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (Model != null && Model.Any())
-            {
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.RollNo)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Maths)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.English)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Science)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.History)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Marks)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Percentage)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Decision)
-                        </td>
-                        <td>
-                            <a href="@Url.Action("EditResult", "Result", new { id = item.Id })" class="btn btn-primary">Edit</a>
-                            @*<a href="@Url.Action("Delete", "Delete", new { id = item.Id })" class="btn btn-danger">Delete</a>*@
-                        </td>
+        <p>
+           <a class="btn btn-primary" asp-action="AddResult" asp-controller="Result">Add result</a>
+           <button type="button" class="btn btn-primary" style="float:right" onclick="location.href='@Url.Action("TeacherDashboard")'">Back</button>
+        </p>
+
+        <div class="table-responsive">
+            <table class="table table-hover table-border">
+                <thead>
+                    <tr class="table-active table-dark">
+                        <th>Roll No</th>
+                        <th>Maths</th>
+                        <th>English</th>
+                        <th>Science</th>
+                        <th>History</th>
+                        <th>Marks</th>
+                        <th>Percentage</th>
+                        <th>Decision</th>
+                        <th></th>
                     </tr>
-                }
-            }
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.RollNo)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Maths)</td>
+                                <td>@Html.DisplayFor(modelItem => item.English)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Science)</td>
+                                <td>@Html.DisplayFor(modelItem => item.History)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Marks)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Percentage)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Decision)</td>
+                                <td>
+                                    <a href="@Url.Action("EditResult", "Result", new { id = item.Id })" class="btn btn-primary">Edit</a>
+                                    @*<a href="@Url.Action("Delete", "Delete", new { id = item.Id })" class="btn btn-danger">Delete</a>*@
+                                </td>
+                            </tr>
+                        }
+                    }
 
-            else
-            {
-                <tr>
-                    <td colspan="5">
-                        <div>
-                            No data available at this moment!
-                        </div>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+                    else
+                    {
+                        <tr>
+                            <td colspan="5">
+                                <div>
+                                    No data available at this moment!
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
