@@ -34,6 +34,10 @@ namespace SRMS.Controllers
         //[Authorize]
         public IActionResult TeacherDashboard()
         {
+            if (HttpContext.Session.GetString("Username") == null)
+            {
+                return RedirectToAction("Index");
+            }
             var students = _student.GetAllStudents();
 
             return View(students);
@@ -41,6 +45,10 @@ namespace SRMS.Controllers
         //[Authorize]
         public IActionResult StudentDashboard()
         {
+            if (HttpContext.Session.GetString("Username") == null)
+            {
+                return RedirectToAction("Index");
+            }
             return View();
         }
         public IActionResult CreateStudent()
@@ -82,7 +90,7 @@ namespace SRMS.Controllers
                         //      CookieAuthenticationDefaults.AuthenticationScheme);
                         //var principal = new ClaimsPrincipal(identity);
                         //await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-                        //HttpContext.Session.SetString("Username", user.Username);
+                        //HttpContext.Session.SetString("Username", user.Username); 
                         HttpContext.Session.SetString("Username", user.Username);
 
                         if (userType == "Teacher")
@@ -94,10 +102,6 @@ namespace SRMS.Controllers
                             return RedirectToAction("StudentDashboard");
                         }
 
-                    }
-                    else
-                    {
-                        ModelState.AddModelError(string.Empty, "Invalid username or password.");
                     }
                 }
                 catch (Exception ex)
