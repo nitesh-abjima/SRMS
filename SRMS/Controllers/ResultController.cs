@@ -36,6 +36,13 @@ namespace SRMS.Controllers
             {
                 try
                 {
+                    //// Calculate marks and percentage
+                    //decimal marks = result.Maths + result.English + result.Science + result.History;
+                    //decimal percentage = marks / 4;
+
+                    //result.Marks = marks;
+                    //result.Percentage = percentage;
+
                     _result.AddResult(result);
                     return RedirectToAction("Result", "Home");
                 }
