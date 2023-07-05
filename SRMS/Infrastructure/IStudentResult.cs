@@ -4,6 +4,6 @@ namespace SRMS.Infrastructure
 {
     public interface IStudentResult
     {
-        StudentResultModel GetStudentResultByRollNo(int rollNo);
+        Task<StudentResultModel> GetStudentResultByRollNo(int rollNo);
     }
 }

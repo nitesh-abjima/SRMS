@@ -5,8 +5,8 @@ namespace SRMS.Infrastructure
     public interface IResultRepo
     {
         void AddResult(Result result);
-        IEnumerable<Result> GetResult();
-        Result GetResultById(int id );
+        Task<IEnumerable<Result>> GetResult();
+        Task<Result> GetResultById(int id );
         void EditResult(Result result);
     }
 }

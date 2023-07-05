@@ -4,9 +4,9 @@ namespace SRMS.Infrastructure
 {
     public interface IStudent
     {
-        Student AddStudent(Student student);
-        IEnumerable<Student> GetAllStudents();
-        Student GetStudentById(int id);
-        void EditStudent(Student student);
+        Task<Student> AddStudent(Student student);
+        Task<IEnumerable<Student>> GetAllStudents();
+        Task<Student> GetStudentById(int id);
+        Task EditStudent(Student student);
     }
 }

@@ -30,6 +30,7 @@ namespace SRMS.Controllers
         public IActionResult Index()
         {
             return View();
+           
         }
         //[Authorize]
         public IActionResult TeacherDashboard()
@@ -108,6 +109,7 @@ namespace SRMS.Controllers
                 {
 
                     ModelState.AddModelError(string.Empty, ex.Message);
+                   
                 }
             }
 

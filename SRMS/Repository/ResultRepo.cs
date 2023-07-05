@@ -53,24 +53,26 @@ namespace SRMS.Repository
             }
         }
 
-        public IEnumerable<Result> GetResult()
+        public async Task<IEnumerable<Result>> GetResult()
         {
             using (var connection = _context.CreateConnection())
             {
-                var result = connection.Query<Result>("GetResult", commandType: CommandType.StoredProcedure);
+                var result = await connection.QueryAsync<Result>("GetResult", commandType: CommandType.StoredProcedure);
                 return result;
             }
         }
 
-        public Result GetResultById(int id)
+
+        public async Task<Result> GetResultById(int id)
         {
             using (var connection = _context.CreateConnection())
             {
                 var parameters = new DynamicParameters();
                 parameters.Add("@Id", id);
-                var result = connection.QuerySingleOrDefault<Result>("GetResultById", parameters, commandType: CommandType.StoredProcedure);
+                var result = await connection.QuerySingleOrDefaultAsync<Result>("GetResultById", parameters, commandType: CommandType.StoredProcedure);
                 return result;
             }
         }
+
     }
 }

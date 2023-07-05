@@ -15,23 +15,23 @@ namespace SRMS.Repository
             _context = context;
         }
 
-        public Student AddStudent(Student student)
+        public async Task<Student> AddStudent(Student student)
         {
             using (var connection = _context.CreateConnection())
             {
                 var parameters = new DynamicParameters();
                 parameters.Add("@StudentName", student.StudentName);
-                parameters.Add("@@RollNo", student.RollNo);
+                parameters.Add("@RollNo", student.RollNo);
                 parameters.Add("@Gender", student.Gender);
                 parameters.Add("@DOB", student.DOB);
                 parameters.Add("@Class", student.Class);
 
-                connection.Execute("AddStudent", parameters, commandType: CommandType.StoredProcedure);
+                await connection.ExecuteAsync("AddStudent", parameters, commandType: CommandType.StoredProcedure);
                 return student;
             }
         }
 
-        public void EditStudent(Student student)
+        public async Task EditStudent(Student student)
         {
             using (var connection = _context.CreateConnection())
             {
@@ -41,29 +41,29 @@ namespace SRMS.Repository
                 parameters.Add("@Gender", student.Gender);
                 parameters.Add("@DOB", student.DOB);
                 parameters.Add("@Class", student.Class);
-                connection.Execute("EditStudent", parameters, commandType: CommandType.StoredProcedure);
-                //return Student1;
+                await connection.ExecuteAsync("EditStudent", parameters, commandType: CommandType.StoredProcedure);
             }
         }
 
-        public IEnumerable<Student> GetAllStudents()
+        public async Task<IEnumerable<Student>> GetAllStudents()
         {
             using (var connection = _context.CreateConnection())
             {
-                var students = connection.Query<Student>("GetAllStudents", commandType: CommandType.StoredProcedure);
+                var students = await connection.QueryAsync<Student>("GetAllStudents", commandType: CommandType.StoredProcedure);
                 return students;
             }
         }
 
-        public Student GetStudentById(int id)
+        public async Task<Student> GetStudentById(int id)
         {
             using (var connection = _context.CreateConnection())
             {
                 var parameters = new DynamicParameters();
                 parameters.Add("@Id", id);
-                var student = connection.QuerySingleOrDefault<Student>("GetStudentById", parameters, commandType: CommandType.StoredProcedure);
+                var student = await connection.QuerySingleOrDefaultAsync<Student>("GetStudentById", parameters, commandType: CommandType.StoredProcedure);
                 return student;
             }
         }
+
     }
 }

@@ -15,12 +15,12 @@ namespace SRMS.Repository
           _context = context;
         }
 
-        public StudentResultModel GetStudentResultByRollNo(int rollNo)
+        public async Task<StudentResultModel> GetStudentResultByRollNo(int rollNo)
         {
             using (var connection = _context.CreateConnection())
             {
 
-                var result = connection.QueryFirstOrDefault<StudentResultModel>("GetStudentResultByRollNo",
+                var result = await connection.QueryFirstOrDefaultAsync<StudentResultModel>("GetStudentResultByRollNo",
                     new { RollNo = rollNo },
                     commandType: CommandType.StoredProcedure);
 
