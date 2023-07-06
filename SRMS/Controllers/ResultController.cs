@@ -30,7 +30,7 @@ namespace SRMS.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddResult(Result result)
+        public IActionResult AddResult(Result result)
         {
             if (ModelState.IsValid)
             {
@@ -43,7 +43,7 @@ namespace SRMS.Controllers
                     //result.Marks = marks;
                     //result.Percentage = percentage;
 
-                    await _result.AddResult(result);
+                    _result.AddResult(result);
                     return RedirectToAction("Result", "Home");
                 }
                 catch (Exception ex)
