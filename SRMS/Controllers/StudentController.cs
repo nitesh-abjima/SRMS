@@ -13,9 +13,9 @@ namespace SRMS.Controllers
             _student = student;
         }
 
-        public IActionResult EditStudent(int id)
+        public async Task<IActionResult> EditStudent(int id)
         {
-            var student = _student.GetStudentById(id);
+            var student = await _student.GetStudentById(id);
             if (student == null)
             {
                 return NotFound();
@@ -25,13 +25,13 @@ namespace SRMS.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateStudent(Student student)
+        public async Task<IActionResult> CreateStudent(Student student)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _student.AddStudent(student);
+                    await _student.AddStudent(student);
                     return RedirectToAction("TeacherDashboard", "Home");
                 }
                 catch (Exception ex)
@@ -44,14 +44,14 @@ namespace SRMS.Controllers
         }
 
         [HttpPost]
-        public IActionResult EditStudent(Student student)
+        public async Task<IActionResult> EditStudent(Student student)
         {
             if (!ModelState.IsValid)
             {
                 return View(student);
             }
 
-            _student.EditStudent(student);
+            await _student.EditStudent(student);
 
             return RedirectToAction("TeacherDashboard", "Home");
         }

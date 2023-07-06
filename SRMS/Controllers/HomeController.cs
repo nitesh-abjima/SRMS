@@ -33,13 +33,14 @@ namespace SRMS.Controllers
            
         }
         //[Authorize]
-        public IActionResult TeacherDashboard()
+        public async Task<IActionResult> TeacherDashboard()
         {
             if (HttpContext.Session.GetString("Username") == null)
             {
                 return RedirectToAction("Index");
             }
-            var students = _student.GetAllStudents();
+
+            var students = await _student.GetAllStudents();
 
             return View(students);
         }
@@ -56,9 +57,9 @@ namespace SRMS.Controllers
         {
             return View();
         }
-        public IActionResult Result()
+        public async Task<IActionResult> Result()
         {
-            var result = _results.GetResult();
+            var result = await _results.GetResult();
             return View(result);
         }
 

@@ -12,11 +12,11 @@ namespace SRMS.Controllers
             _studentResult = studentResult;
         }
 
-        public IActionResult GetStudentResult(int rollNo)
+        public async Task<IActionResult> GetStudentResult(int rollNo)
         {
             try
             {
-                var studentResult = _studentResult.GetStudentResultByRollNo(rollNo);
+                var studentResult = await _studentResult.GetStudentResultByRollNo(rollNo);
 
                 if (studentResult == null)
                 {

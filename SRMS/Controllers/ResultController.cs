@@ -13,9 +13,9 @@ namespace SRMS.Controllers
             _result = result;
         }
 
-        public IActionResult EditResult(int id)
+        public async Task<IActionResult> EditResult(int id)
         {
-            var result = _result.GetResultById(id);
+            var result = await _result.GetResultById(id);
             if (result == null)
             {
                 return NotFound();
@@ -30,7 +30,7 @@ namespace SRMS.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddResult(Result result)
+        public async Task<IActionResult> AddResult(Result result)
         {
             if (ModelState.IsValid)
             {
@@ -43,7 +43,7 @@ namespace SRMS.Controllers
                     //result.Marks = marks;
                     //result.Percentage = percentage;
 
-                    _result.AddResult(result);
+                    await _result.AddResult(result);
                     return RedirectToAction("Result", "Home");
                 }
                 catch (Exception ex)
