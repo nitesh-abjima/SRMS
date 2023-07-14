@@ -1,0 +1,343 @@
+                SRMS SQL
+-- ================================================
+
+//////////////////////////////////////////
+
+CREATE TABLE [dbo].[Users](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[Username] [varchar](50) NOT NULL,
+	[Email] [varchar](50) NOT NULL,
+	[Password] [varchar](100) NOT NULL,
+	[UserType] [varchar](20) NOT NULL,
+	[Status] [bit] NOT NULL,
+	[CreatedBy] [varchar](50) NOT NULL,
+	[CreatedDate] [datetime] NOT NULL,
+	[ModifiedBy] [varchar](50) NULL,
+	[ModifiedDate] [datetime] NULL,
+        )
+
+////////////////////////////////////////////////////////////////////////
+
+CREATE TABLE Result (
+    id INT IDENTITY(1,1) PRIMARY KEY not null,
+    RollNo int not null,
+    Maths DECIMAL(10, 2) not null,
+    English DECIMAL(10, 2) not null,
+    Science DECIMAL(10, 2) not null,
+    History DECIMAL(10, 2) not null,
+    Marks DECIMAL(10, 2) not null,
+    [Percentage] DECIMAL(5, 2) not null,
+    Decision NVARCHAR(50) not null,
+    [Status] bit NOT NULL,
+    [CreatedBy] varchar(50) NOT NULL,
+    [CreatedDate] datetime NOT NULL,
+    [ModifiedBy] varchar(50) NULL,
+    [ModifiedDate] datetime NULL
+    
+)
+
+////////////////////////////////////////////////////////////////////////
+
+CREATE TABLE [dbo].[Student](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[StudentName] [varchar](50) NOT NULL,
+	[RollNo] [int] NOT NULL,
+	[Gender] [varchar](50) NOT NULL,
+	[DOB] [datetime] NOT NULL,
+	[Class] [varchar](50) NOT NULL,
+	[Status] [bit] NOT NULL,
+	[CreatedBy] [varchar](50) NULL,
+	[CreatedDate] [datetime] NULL,
+	[ModifiedBy] [varchar](50) NULL,
+	[ModifiedDate] [datetime] NULL
+	)
+
+//////////////////////////////////////////////////////////////////////
+
+ALTER PROCEDURE [dbo].[SignupUser]
+    @Username NVARCHAR(50),
+    @Password NVARCHAR(50),
+    @Email NVARCHAR(100),
+    @UserType NVARCHAR(50),
+    @SignupSuccess BIT OUTPUT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF EXISTS (SELECT 1 FROM Users WHERE Email = @Email)
+    BEGIN
+        RAISERROR('User already exists.', 16, 1);
+        SET @SignupSuccess = 0;
+        RETURN;
+    END
+
+    INSERT INTO Users (Username, [Password], Email, UserType, [Status], CreatedBy, CreatedDate)
+    VALUES (@Username, @Password, @Email, @UserType, 1, @Username, GETUTCDATE());
+
+    SET @SignupSuccess = 1;
+END
+
+///////////////////////////////////////////////////////
+
+ALTER PROCEDURE [dbo].[LoginUser]
+    @Username NVARCHAR(50),
+    @Password NVARCHAR(50),
+	@UserType NVARCHAR(50),
+	@LoginSuccess BIT OUTPUT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF NOT EXISTS (SELECT 1 FROM Users WHERE Username = @Username)
+    BEGIN
+        RAISERROR('User does not exist.', 16, 1);
+        SET @LoginSuccess = 0;
+        RETURN;
+    END
+
+    IF NOT EXISTS (SELECT 1 FROM Users WHERE Username = @Username AND [Password] = @Password)
+    BEGIN
+        RAISERROR('Invalid username or password.', 16, 1);
+        SET @LoginSuccess = 0;
+        RETURN;
+    END
+
+    IF NOT EXISTS (SELECT 1 FROM Users WHERE Username = @Username AND [Password] = @Password AND UserType = @UserType)
+    BEGIN
+        RAISERROR('Incorrect user type.', 16, 1);
+        SET @LoginSuccess = 0;
+        RETURN;
+    END
+
+    IF EXISTS (SELECT 1 FROM Users WHERE Username = @Username AND [Password] = @Password AND UserType = @UserType)
+    BEGIN
+        -- Successful login
+        SET @LoginSuccess = 1;
+    END
+END
+
+////////////////////////////////////////////////////////////////////
+
+ALTER PROCEDURE [dbo].[AddStudent]
+    @StudentName varchar(50),
+    @RollNo int,
+    @Gender varchar(50),
+    @DOB datetime,
+    @Class varchar(50)
+    
+AS
+BEGIN
+    IF EXISTS (SELECT 1 FROM Student WHERE RollNo = @RollNo)
+    BEGIN
+        RAISERROR('Student with this RollNo already exists', 16, 1);
+        RETURN;
+    END
+    INSERT INTO Student (StudentName, RollNo, Gender, DOB, Class, [Status], CreatedBy, CreatedDate, ModifiedBy, ModifiedDate)
+    VALUES (@StudentName, @RollNo, @Gender, @DOB, @Class, 1, 'Teacher', GETUTCDATE(), 'Teacher', GETUTCDATE())
+END
+
+//////////////////////////////////////////////////////////////////////
+
+ALTER PROCEDURE [dbo].[AddResult]
+    @RollNo INT,
+    @Maths DECIMAL(10, 2),
+    @English DECIMAL(10, 2),
+    @Science DECIMAL(10, 2),
+    @History DECIMAL(10, 2),
+    @Marks DECIMAL(10, 2),
+    @Percentage DECIMAL(5, 2),
+    @Decision NVARCHAR(50)
+AS
+BEGIN
+IF NOT EXISTS (SELECT 1 FROM Student WHERE RollNo = @RollNo)
+    BEGIN
+        RAISERROR('Student with RollNo %d does not exist.', 16, 1, @RollNo);
+        RETURN;
+    END
+
+IF EXISTS (SELECT 1 FROM Result WHERE RollNo = @RollNo)
+    BEGIN
+        RAISERROR('Student Result for this RollNo already exists', 16, 1);
+        RETURN;
+
+    END
+    INSERT INTO Result (RollNo, Maths, English, Science, History, Marks, Percentage, Decision, [Status], CreatedBy, CreatedDate, ModifiedBy, ModifiedDate)
+    VALUES (@RollNo, @Maths, @English, @Science, @History, @Marks, @Percentage, @Decision, 1, 'Teacher', GETUTCDATE(), 'Teacher', GETUTCDATE())
+END
+
+/////////////////////////////////////////////////////////
+
+ALTER PROCEDURE [dbo].[GetResult]
+AS
+BEGIN
+    SELECT id, RollNo, Maths, English, Science, History, Marks, [Percentage], Decision, [Status], CreatedBy, CreatedDate, ModifiedBy, ModifiedDate
+    FROM Result;
+END
+
+//////////////////////////////////////////////////////////
+
+ALTER PROCEDURE [dbo].[GetStudentResultByRollNo]
+    @RollNo INT
+AS
+BEGIN
+    IF EXISTS (SELECT 1 FROM Student WHERE RollNo = @RollNo)
+    BEGIN
+        IF EXISTS (SELECT 1 FROM Result WHERE RollNo = @RollNo)
+        BEGIN
+            SELECT
+                S.StudentName,
+                S.RollNo,
+                S.Gender,
+                S.DOB,
+                S.Class,
+                R.Maths,
+                R.English,
+                R.Science,
+                R.History,
+                R.Marks,
+                R.[Percentage],
+                R.Decision,
+		1 AS HasResult -- Result exists
+            FROM
+                Student AS S
+            INNER JOIN
+                Result AS R ON S.RollNo = R.RollNo
+            WHERE
+                S.RollNo = @RollNo
+        END
+        ELSE
+        BEGIN
+            SELECT
+                S.StudentName,
+                S.RollNo,
+                S.Gender,
+                S.DOB,
+                S.Class,
+		0 AS HasResult -- No Result exists
+            FROM
+                Student AS S
+            WHERE
+                S.RollNo = @RollNo
+        END
+    END
+    ELSE
+    BEGIN
+        RAISERROR('Student with RollNo %d does not exist.', 16, 1, @RollNo);
+        RETURN;
+    END
+END
+
+////////////////////////////////////////////////////////////////////////////
+
+ALTER PROCEDURE [dbo].[GetResultById]
+    @Id INT
+AS
+BEGIN
+    SELECT RollNo, Maths, English, Science, History, Marks, [Percentage], Decision
+    FROM Result
+    WHERE id = @Id;
+END
+
+///////////////////////////////////////////////////////////
+
+ALTER PROCEDURE [dbo].[EditResult]
+    @Id INT,
+    @Maths DECIMAL(10, 2),
+    @English DECIMAL(10, 2),
+    @Science DECIMAL(10, 2),
+    @History DECIMAL(10, 2),
+    @Marks DECIMAL(10, 2),
+    @Percentage DECIMAL(5, 2),
+    @Decision NVARCHAR(50)
+AS
+BEGIN
+    UPDATE Result
+    SET Maths = @Maths,
+        English = @English,
+        Science = @Science,
+        History = @History,
+        Marks = @Marks,
+        [Percentage] = @Percentage,
+        Decision = @Decision,
+	ModifiedBy = 'Teacher',
+        ModifiedDate = GETUTCDATE()
+    WHERE id = @Id;
+END
+
+///////////////////////////////////////////////////////////////////
+
+ALTER PROCEDURE [dbo].[GetStudentById]
+    @Id INT
+AS
+BEGIN
+    SELECT *
+    FROM Student
+    WHERE id = @Id;
+END
+
+///////////////////////////////////////////////////////////////////
+
+ALTER PROCEDURE [dbo].[EditStudent]
+    @Id INT,
+    @StudentName VARCHAR(50),
+    @Gender VARCHAR(50),
+    @DOB DATETIME,
+    @Class VARCHAR(50)
+AS
+BEGIN
+    UPDATE Student
+    SET StudentName = @StudentName,
+        Gender = @Gender,
+        DOB = @DOB,
+        Class = @Class,
+        ModifiedBy = 'Teacher',
+        ModifiedDate = GETUTCDATE()
+    WHERE id = @Id;
+END
+
+////////////////////////////////////////////////////////////
+
+ALTER PROCEDURE [dbo].[GetAllStudents]
+AS
+BEGIN
+    SELECT id, StudentName, RollNo, Gender, DOB, Class
+    FROM Student;
+END
+
+
+
+/////////////////////////////////////////////////
+
+
+Skills List
+
+C#-
+
+.Introduction to C# and .NET Framework
+.Variables, Data Types, and Operators
+.Control Structures (if-else, switch, loops)
+.Arrays and Collections
+.Methods and Functions
+.Object-Oriented Programming (OOP) Concepts
+.Classes and Objects
+.Inheritance and Polymorphism
+.Interfaces and Abstract Classes
+.Exception Handling
+.Async Await
+.Generics
+.Delegates and Events
+.LINQ (Language Integrated Query)
+
+ASP.NET-
+
+.Repository pattern
+.Attributes
+.Basic SQL
+.Database management
+.ASP.NET Web API
+.ASP.NET MVC (Model-View-Controller)
+.Entity Framework (Database First)
+.Entity Framework (Code First)
+.Dapper with Store procedure
+
+
